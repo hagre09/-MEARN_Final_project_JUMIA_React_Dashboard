@@ -7,18 +7,18 @@ import './Countries.css'
 export default function Countries() {
     const [countries, setCountries] = useState([]);
     const [search, setSearch] = useState('');
-    const [filred, setFilred] = useState([]);
+    const [filtered, setFiltered] = useState([]);
     const [editRow, setEditRow] = useState({name: '', arName: ''});
 
     useEffect(() => {
-        getContries(setCountries, setFilred);
+        getContries(setCountries, setFiltered);
     }, []);
 
     useEffect(()=>{
         const result = countries.filter(country => {
             return country.name.toLowerCase().match(search.toLowerCase());
         }); 
-        setFilred(result);
+        setFiltered(result);
     }, [search]);
 
     
@@ -26,8 +26,8 @@ export default function Countries() {
     return (
         <DataTable 
             title="Countries List" 
-            columns={getColumns(countries, setCountries, filred, setFilred, editRow, setEditRow)} 
-            data={filred } pagination fixedHeader 
+            columns={getColumns(countries, setCountries, filtered, setFiltered, editRow, setEditRow)} 
+            data={filtered } pagination fixedHeader 
             fixedHeaderScrollHeight="800px" 
             highlightOnHover 
             selectableRows 

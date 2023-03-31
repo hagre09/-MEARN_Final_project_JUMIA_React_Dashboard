@@ -1,41 +1,41 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { axiosInstance } from "../../../netWork/netWork";
 
-export const getContries = async (setCountries, setFilred) => {
+export const getContries = async (setCountries, setFiltered) => {
     axiosInstance.get(`/country`, {
     }).then((res) => {
         console.log("country", res);
         setCountries(res.data);
-        setFilred(res.data); 
+        setFiltered(res.data); 
     }).catch((err) => {
 
     })
 }
 
 
-export const delContries = async (id, countries, setCountries, filred, setFilred) => {
+export const delContries = async (id, countries, setCountries, filtered, setFiltered) => {
     console.log("id: " + id);
 
     axiosInstance.delete('/country/' + id, {}).then((res) => {
         console.log(res.data);
-        removeLocal(id, countries, setCountries, filred, setFilred)
+        removeLocal(id, countries, setCountries, filtered, setFiltered)
     }).catch((err) => {
 
     })
 }
 
-export const updateCountry = async (countries, setCountries, filred, setFilred, editRow, setEditRow) => {
+export const updateCountry = async (countries, setCountries, filtered, setFiltered, editRow, setEditRow) => {
     console.log("id: " + editRow._id);
 
     axiosInstance.put('/country/' + editRow._id, {name: editRow.name, arName: editRow.arName}).then((res) => {
         console.log(res.data);
-        updateLocal(countries, setCountries, filred, setFilred, editRow, setEditRow)
+        updateLocal(countries, setCountries, filtered, setFiltered, editRow, setEditRow)
     }).catch((err) => {
 
     })
 }
 
-export const updateLocal = (countries, setCountries, filred, setFilred, editRow, setEditRow) => {
+export const updateLocal = (countries, setCountries, filtered, setFiltered, editRow, setEditRow) => {
     var result = [];
     countries.forEach(country => {
         result = (country._id == editRow._id) ? [...result, editRow] : result = [...result, country];
@@ -44,27 +44,27 @@ export const updateLocal = (countries, setCountries, filred, setFilred, editRow,
 
 
     result = [];
-    filred.forEach(country => {
+    filtered.forEach(country => {
         result = (country._id == editRow._id) ? [...result, editRow] : result = [...result, country];
     });
-    setFilred(result);
+    setFiltered(result);
     setEditRow('');
 }
 
-export const removeLocal = (id, countries, setCountries, filred, setFilred) => {
+export const removeLocal = (id, countries, setCountries, filtered, setFiltered) => {
     var result = countries.filter(country => {
         return country._id != id;
     }); 
     setCountries(result);
 
 
-    result = filred.filter(country => {
+    result = filtered.filter(country => {
         return country._id != id;
     });
-    setFilred(result);
+    setFiltered(result);
 }
 
-export const  getColumns = (countries, setCountries, filred, setFilred, editRow, setEditRow) =>{
+export const  getColumns = (countries, setCountries, filtered, setFiltered, editRow, setEditRow) =>{
     return [
         {
             name: 'Country Name',
@@ -98,10 +98,10 @@ export const  getColumns = (countries, setCountries, filred, setFilred, editRow,
                 <FontAwesomeIcon icon={row._id != editRow._id? "pen-to-square" : "save"} color={row._id != editRow._id? "#666" : "green"} className="editAddIcon fa-2xl" onClick={(e)=>{
                     setEditRow(row)
                     if(row._id == editRow._id){
-                        updateCountry(countries, setCountries, filred, setFilred, editRow, setEditRow)
+                        updateCountry(countries, setCountries, filtered, setFiltered, editRow, setEditRow)
                     }
                 }}/>
-                <FontAwesomeIcon icon="trash-alt" color="#666" className="editAddIcon fa-2xl" onClick={()=>{delContries(row._id, countries, setCountries, filred, setFilred)}}/>
+                <FontAwesomeIcon icon="trash-alt" color="#666" className="editAddIcon fa-2xl" onClick={()=>{delContries(row._id, countries, setCountries, filtered, setFiltered)}}/>
             </>,
         }
     ];
